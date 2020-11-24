@@ -1007,6 +1007,8 @@ select的几大缺点：
 
 ### 乐观锁和悲观锁
 
+https://github.com/hmao/LeetCode/blob/master/%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81 
+
 
 ### 秒杀并发情况下库存为负数问题
 
