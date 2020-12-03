@@ -8,6 +8,8 @@
 7. 使用反射 API 对某个类进行反射调用时，初始化这个类，其实跟前面一样，反射调用 要么是已经有实例了，要么是静态方法，都需要初始化;
 8. 当初次调用 MethodHandle 实例时，初始化该 MethodHandle 指向的方法所在的 类。
 
+
+
 ### 不会初始化
 
 1. 通过子类引用父类的静态字段，只会触发父类的初始化，而不会触发子类的初始化。
@@ -16,6 +18,21 @@
 4. 通过类名获取 Class 对象，不会触发类的初始化，Hello.class 不会让 Hello 类初始 化。
 5. 通过 Class.forName 加载指定类时，如果指定参数 initialize 为 false 时，也不会触 发类初始化，其实这个参数是告诉虚拟机，是否要对类进行初始化。Class.forName (“jvm.Hello”)默认会加载 Hello 类。
 6. 通过 ClassLoader 默认的 loadClass 方法，也不会触发初始化动作(加载了，但是 不初始化)。
+
+
+### 三类加载器
+
+1. 启动类加载器(BootstrapClassLoader) 
+2. 扩展类加载器(ExtClassLoader)
+3. 应用类加载器(AppClassLoader)
+
+
+### 加载器特点
+1. 双亲委托 
+2. 负责依赖 
+3. 缓存加载
+
+
 ### JVM 命令行工具
 1. jps/jinfo 查看 java 进程
   jps/jps -lmv
