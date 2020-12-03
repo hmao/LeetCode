@@ -23,13 +23,38 @@
 ### 三类加载器
 
 1. 启动类加载器(BootstrapClassLoader) 
+    负责加载JRE的核心类库，如jre目标下的rt.jar,charsets.jar等
 2. 扩展类加载器(ExtClassLoader)
+    负责加载JRE扩展目录ext中JAR类包
 3. 应用类加载器(AppClassLoader)
+    负责加载ClassPath路径下的类包
+
+
 
 
 ### 加载器特点
 1. 双亲委托 
+ClassLoader使用的是双亲委托模型来搜索类的，每个ClassLoader实例都有一个父类加载器的引用
+这个过程是由上至下依次检查的，首先由最顶层的类加载器Bootstrap ClassLoader试图加载，如果没加载到，则把任务转交给Extension ClassLoader试图加载，如果也没加载到，则转交给App ClassLoader 进行加载，如果它也没有加载得到的话，则返回给委托的发起者，由它到指定的文件系统或网络等URL中加载该类。如果它们都没有加载到这个类时，则抛出ClassNotFoundException异常
+
+ 因为这样可以避免重复加载，当父亲已经加载了该类的时候，就没有必要子ClassLoader再加载一次。考虑到安全因素，我们试想一下，如果不使用这种委托模式，那我们就可以随时使用自定义的String来动态替代java核心api中定义的类型，这样会存在非常大的安全隐患，而双亲委托的方式，就可以避免这种情况，因为String已经在启动时就被引导类加载器（Bootstrcp ClassLoader）加载，所以用户自定义的ClassLoader永远也无法加载一个自己写的String，除非你改变JDK中ClassLoader搜索类的默认算法。
+ 
+ 优点  
+1. 可以保证java核心类库的安全，即保证由引导类加载器加载的类不能被用户随便替换，用户不能自己随便定义一个二进制名也为
+java.lang.String 的类来替换java核心类库的java.lang.String类，否则会抛出ClassCastException。
+
+
+2. 使得一个类的不同版本可以共存在jvm中，带来了极大的灵活性，OSGi技术的实现就是得益于此。
+
+缺点：  
+
+ 而根据一个类的定义加载器是这个类中引用的其它类的初始加载器可知，java核心类库中定义的类是不能使用系统类加载器定义的类。而java提供了很多服务提供者接口（Service Provider Interface SPI),许可第三方来实现这些类的接口。第三方开发的类通常是由应用类加载器在类路径下（classpath）来找到并且定义的。引导类加载器是无法找到 SPI 的实现类的，因为它只加载 Java 的核心库。它也不能代理给系统类加载器，因为它是系统类加载器的祖先类加载器。也就是说，类加载器的双亲委托模型无法解决这个问题，这是双亲委托模型的缺点。
+
+
+
 2. 负责依赖 
+
+
 3. 缓存加载
 
 
