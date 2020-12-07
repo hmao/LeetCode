@@ -263,3 +263,79 @@ PROPAGATION_NESTED —— Nested的事务和它的父事务是相依的，它的
 除了可防止脏读，不可重复读外，还避免了幻读  
 
 
+### List 和 Set区别
+
+两个接口都是继承自Collection​，是常用来存放数据项的集合，主要区别如下：
+
+① List和Set之间很重要的一个区别是是否允许重复元素的存在，在List中允许插入重复的元素，而在Set中不允许重复元素存在  
+
+② 与元素先后存放顺序有关，List是有序集合，会保留元素插入时的顺序，Set是无序集合  
+
+③ List可以通过下标来访问，而Set不能  
+
+### Java ArrayList底层实现原理
+
+概述  
+    会自动扩容的数组，线程不安全  
+    查询快，增删慢   
+底层实现
+    Object数组实现，存入元素时会丢失类型  
+    底层扩容因子为原长度的1.5倍  
+    默认数组长度是10，扩容时最大长度为int最大数  
+    对象内部有继承自父类AbstractList的modcount属性  
+    每次对数组结构进行改变时，该值都会增加1  
+    在迭代器中会有expectedModCount值，会与此值进行比较，如果一致迭代；不一致，抛出异常  
+    简单校验，防止迭代期间原始集合改变  
+RandomAccess接口
+    用于标明实现该接口的List支持快速随机访问，主要目的是使算法能够在随机和顺序访问的list中表现的更加高效。  
+    所以有此接口的集合，优先选用for循环遍历;  
+方法
+    继承自list的对元素和索引的增删改查   
+    removeRange(int start,int end):范围内删除，开始到结束-1  
+    trimToSize()：缩小长度  
+    
+  ArrayList是List接口的可变数组的实现。实现了所有可选列表操作，并允许包括 null 在内的所有元素。除了实现 List 接口外，此类还提供一些方法来操作内部用来存储列表的数组的大小  
+   每个ArrayList实例都有一个容量，该容量是指用来存储列表元素的数组的大小。它总是至少等于列表的大小。随着向ArrayList中不断添加元素，其容量也自动增长。自动增长会带来数据向新数组的重新拷贝，因此，如果可预知数据量的多少，可在构造ArrayList时指定其容量。在添加大量元素前，应用程序也可以使用ensureCapacity操作来增加ArrayList实例的容量，这可以减少递增式再分配的数量  
+   注意，此实现不是同步的。如果多个线程同时访问一个ArrayList实例，而其中至少一个线程从结构上修改了列表，那么它必须保持外部同步  
+### Linux命令用过哪些
+
+https://blog.csdn.net/ljianhui/article/details/11100625
+
+系统
+
+# uname -a               # 查看内核/操作系统/CPU信息
+# lsb_release -a         # 查看操作系统版本 (适用于所有的linux，包括Redhat、SuSE、Debian等发行版，但是在debian下要安装lsb)   
+# cat /proc/cpuinfo      # 查看CPU信息
+# hostname               # 查看计算机名
+# lspci -tv              # 列出所有PCI设备
+# lsusb -tv              # 列出所有USB设备
+# lsmod                  # 列出加载的内核模块
+# env                    # 查看环境变量
+资源
+
+# free -m                # 查看内存使用量和交换区使用量
+# df -h                  # 查看各分区使用情况
+# du -sh <目录名>        # 查看指定目录的大小
+# grep MemTotal /proc/meminfo   # 查看内存总量
+# grep MemFree /proc/meminfo    # 查看空闲内存量
+# uptime                 # 查看系统运行时间、用户数、负载
+# cat /proc/loadavg      # 查看系统负载
+磁盘和分区
+
+# mount | column -t      # 查看挂接的分区状态
+# fdisk -l               # 查看所有分区
+# swapon -s              # 查看所有交换分区
+# hdparm -i /dev/hda     # 查看磁盘参数(仅适用于IDE设备)
+# dmesg | grep IDE       # 查看启动时IDE设备检测状况
+网络
+
+# ifconfig               # 查看所有网络接口的属性
+# iptables -L            # 查看防火墙设置
+# route -n               # 查看路由表
+# netstat -lntp          # 查看所有监听端口
+# netstat -antp          # 查看所有已经建立的连接
+# netstat -s             # 查看网络统计信息
+进程
+
+# ps -ef                 # 查看所有进程
+# top                    # 实时显示进程状态
