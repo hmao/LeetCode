@@ -1033,14 +1033,21 @@ https://github.com/hmao/LeetCode/blob/master/%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8
 
 1. for update显示加锁
 2. 把update语句写在前边，先把数量-1，之后select出库存如果>-1就commit,否则rollback。
-```
+
 update products set quantity = quantity-1 WHERE id=3;
 select quantity from products WHERE id=3 for update;
-```
+
 3. update语句在更新的同时加上一个条件
-```
+
 quantity = select quantity from products WHERE id=3;
 update products set quantity = ($quantity-1) WHERE id=3 and queantity = $quantity;
 
-# 
-
+### 什么是 Spring Boot
+Spring Boot 使创建独立运行、生产级别的 Spring 应用变得容易，你可以直接运行它。 我们对 Spring 平台和第三方库采用限定性视角，以此让大家能在最小的成本下上手。 大部分 Spring Boot 应用仅仅需要最少量的配置。  
+功能特性  
+1. 创建独立运行的 Spring 应用  
+2. 直接嵌入 Tomcat 或 Jetty，Undertow，无需部署 WAR 包  
+3. 提供限定性的 starter 依赖简化配置(就是脚手架)    
+4. 在必要时自动化配置 Spring 和其他三方依赖库  
+5. 提供生产 production-ready 特性，例如指标度量，健康检查，外部配置等  
+6. 完全零代码生产和不需要 XML 配置  
