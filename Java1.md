@@ -428,3 +428,35 @@ TCP/IP协议族
 数据链路层  传输有地址的帧以及错误检测功能   SLIP，CSLIP，PPP，ARP，RARP，MTU  
 
 物理层  以二进制数据形式在物理媒体上传输数据  ISO2110，IEEE802。IEEE802.2  
+
+### ArrayList
+基本特点:基于数组，便于按 index 访问，超过数组需要扩容，扩容成本较高 用途:大部分情况下操作一组数据都可以用 ArrayList  
+原理:使用数组模拟列表，默认大小10，扩容 x1.5，newCapacity = oldCapacity + (oldCapacity >> 1)
+
+安全问题:
+1、写冲突:  
+- 两个写，相互操作冲突  
+2、读写冲突:  
+- 读，特别是 iterator 的时候，数据个数变了，拿到了非预期数据或者报错 - 产生ConcurrentModificationException  
+
+
+List 线程安全的简单办法
+
+ 1.ArrayList 的方法都加上 synchronized -> Vector  
+- 2.Collections.synchronizedList，强制将 List 的操作加上同步    
+- 3.Arrays.asList，不允许添加删除，但是可以 set 替换元素  
+- 4.Collections.unmodifiableList，不允许修改内容，包括添加删除和 set  
+
+
+### LinkedList
+
+基本特点:使用链表实现，无需扩容 用途:不知道容量，插入变动多的情况 原理:使用双向指针将所有节点连起来  
+
+安全问题:  
+1、写冲突:  
+- 两个写，相互操作冲突  
+2、读写冲突:  
+- 读，特别是 iterator 的时候，数据个数变了 ，拿到了非预期数据或者报错  
+- 产生 ConcurrentModificationException  
+
+
