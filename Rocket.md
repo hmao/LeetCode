@@ -1205,3 +1205,29 @@ Primary请求的入口是PrimaryOperationTransportHandler的MessageReceived, 当
 9. flush translog 默认情况下，translog要在此处落盘完成，如果对可靠性要求不高，可以设置translog异步，那么translog的fsync将会异步执行，但是落盘前的数据有丢失风险。
 10. 发送请求给replicas 将构造好的bulkrequest并发发送给各replicas，等待replica返回，这里需要等待所有的replicas返回，响应请求给协调节点。如果某个shard执行失败，则primary会给master发请求remove该shard。这里会同时把sequenceID， primaryTerm, GlobalCheckPoint等传递给replica。
 11. 等待replica响应 当所有的replica返回请求时，更细primary shard的LocalCheckPoint。
+
+#### replica shard
+
+Replica 请求的入口是在ReplicaOperationTransportHandler的messageReceived，当replica shard接收到请求时执行如下流程：
+
+1. 判断操作类型 replica收到的写如请求只会有add和delete，因update在primary shard上已经转换为add或delete了。根据不同的操作类型执行对应的操作
+2. Parse Doc
+3. 更新mapping
+4. 获取sequenceId和Version 直接使用primary shard发送过来的请求中的内容即可
+5. 写如lucene
+6. write Translog
+7. Flush translog
+
+### 总结与分析
+
+Elasticsearch建立在Lucene基础之上，底层采用Lucene来实现文件的读写操作，实现了文档的存储和高效查询。然后Lucene作为一个搜索库在应对海量数据的存储上仍有一些不足之处 
+
+Elasticsearch通过引入分片概念，成功地将lucene部署到分布式系统中，增强了系统的可靠性和扩展性 
+
+Elasticsearch通过定期refresh lucene in-momory-buffer中的数据，使得ES具有了近实时的写入和查询能力 
+
+Elasticsearch通过引入translog，多副本，以及定期执行flush，merge等操作保证了数据可靠性和较高的存储性能 
+
+Elasticsearch通过存储_source字段结合verison字段实现了文档的局部更新，使得ES的使用方式更加灵活多样 
+
+Elasticsearch基于lucene，又不简单地只是lucene，它完美地将lucene与分布式系统结合，既利用了lucene的检索能力，又具有了分布式系统的众多优点 
