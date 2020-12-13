@@ -1314,3 +1314,20 @@ Elasticsearch通过引入translog，多副本，以及定期执行flush，merge�
 Elasticsearch通过存储_source字段结合verison字段实现了文档的局部更新，使得ES的使用方式更加灵活多样 
 
 Elasticsearch基于lucene，又不简单地只是lucene，它完美地将lucene与分布式系统结合，既利用了lucene的检索能力，又具有了分布式系统的众多优点 
+
+### 解决 Elastic Search 的深分页问题
+
+可以把 scroll 理解爲关係型数据库里的 cursor，因此，scroll 并不适合用来做实时搜索，而更适用于后台批处理任务，比如群发，使用 scroll 可以增加性能的原因  
+scroll 具体分爲初始化和遍历两步
+
+初始化时将所有符合搜索条件的搜索结果缓存起来，可以想象成快照 
+在遍历时，从这个快照里取数据  
+也就是说，在初始化后对索引插入、删除、更新数据都不会影响遍历结果  
+
+
+注意要在URL中的search后加上 scroll=1m，不能写在 request body 中，其中 1m 表示这个游标要保持开启 1 分钟  
+
+https://zhuanlan.zhihu.com/p/109068603
+
+根据这个scroll_id 进行下一页的查询。可以把这个scroll_id理解为通常关系型数据库中的游标。但是，这种scroll方式的缺点是不能够进行反复查询，也就是说，只能进行下一页，不能进行上一页  
+
