@@ -206,6 +206,11 @@ https://zhuanlan.zhihu.com/p/102859170
 命令传播  
 读写分离和过期数据  
 
+### Redis 高可用
+
+http://16kr.com/42.html
+
+
 
 ## Mysql
 
