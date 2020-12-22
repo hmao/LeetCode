@@ -1267,6 +1267,13 @@ Spring使用了三级缓存解决了循环依赖的问题。在populateBean()给
 
 参考文章：[自己写个Spring MVC](https://zhuanlan.zhihu.com/p/139751932)
 
+### spring boot 启动会扫描以下位置的application.properties或者application.yml文件作为Spring boot的默认配置文件
+
+–file:./config/
+–file:./
+–classpath:/config/
+–classpath:/
+
 ## 消息队列
 
 ### 为什么需要消息队列
