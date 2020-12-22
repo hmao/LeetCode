@@ -59,14 +59,6 @@ client端会对某个znode建立一个watcher事件，当该znode发生变化时
 3. 合理高效的数据结构
 4. 采用了非阻塞I/O多路复用机制（有一个文件描述符同时监听多个文件描述符是否有数据到来）
 
-### Redis 的数据结构内部原理及使用场景
-
-1. String字符串:字符串类型是 Redis 最基础的数据结构，首先键都是字符串类型，而且 其他几种数据结构都是在字符串类型基础上构建的，我们常使用的 set key value 命令就是字符串。常用在缓存、计数、共享Session、限速等。
-
-String的数据类型是由SDS(simple dynamic string)实现的。Redis并没有采用C语言的字符串表示，而是自己构建了一种名为SDS的抽象类型，并将SDS作为Redis的默认字符串表示  
-redis>SET msg "hello world"
-OK
-上边设置key=msg，value=hello world的键值对，它们的底层存储是：键（key）是字符串类型，其底层实现是一个保存着“msg”的SDS。值（value）是字符串类型，其底层实现是一个保存着“hello world”的SDS  
 
 ### redis主从和哨兵模式简介
 
@@ -88,6 +80,14 @@ master存活检测、master与slave运行情况检测
 PS：哨兵也是一台redis服务器，只是不提供数据服务  
 哨兵的启动依赖于主从模式，所以须把主从模式安装好的情况下再去做哨兵模式，所有节点上都需要部署哨兵模式，哨兵模式会监控所有的redis工作节点是否正常，当master出现问题的时候，因为其他节点与主节点失去联系，因此会投票，投票过半就认为这个master的确出现问题，然后会通知哨兵间，然后从slaves中选取一个作为新的master  
 
+### Redis 的数据结构内部原理及使用场景
+
+1. String字符串:字符串类型是 Redis 最基础的数据结构，首先键都是字符串类型，而且 其他几种数据结构都是在字符串类型基础上构建的，我们常使用的 set key value 命令就是字符串。常用在缓存、计数、共享Session、限速等  
+
+String的数据类型是由SDS(simple dynamic string)实现的。Redis并没有采用C语言的字符串表示，而是自己构建了一种名为SDS的抽象类型，并将SDS作为Redis的默认字符串表示  
+redis>SET msg "hello world"
+OK
+上边设置key=msg，value=hello world的键值对，它们的底层存储是：键（key）是字符串类型，其底层实现是一个保存着“msg”的SDS。值（value）是字符串类型，其底层实现是一个保存着“hello world”的SDS    
 
 
 2. Hash哈希:在Redis中，哈希类型是指键值本身又是一个键值对结构，哈希可以用来存放用户信息，比如实现购物车。
