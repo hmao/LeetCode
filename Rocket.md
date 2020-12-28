@@ -608,14 +608,14 @@ JVM引入动态年龄计算，主要基于如下两点考虑：
 
     e、 采用的垃圾收集器效率较低，比如新生代使用serial收集器  
     
-    Full GC运行的很频繁
-    #### System.gc()方法的调用    
+   #### Full GC运行的很频繁
+   ##### System.gc()方法的调用    
     此方法的调用是建议JVM进行Full GC,虽然只是建议而非一定,但很多情况下它会触发 Full GC,从而增加Full GC的频率,也即增加了间歇性停顿的次数。强烈影响系建议能不使用此方法就别使用，让虚拟机自己去管理它的内存，可通过通过-XX:+ DisableExplicitGC来禁止RMI调用System.gc
-    #### 老年代代空间不足  
+   ##### 老年代代空间不足  
     老年代空间只有在新生代对象转入及创建为大对象、大数组时才会出现不足的现象，当执行Full GC后空间仍然不足，则抛出如下错误：
 java.lang.OutOfMemoryError: Java heap space 
 为避免以上两种状况引起的Full GC，调优时应尽量做到让对象在Minor GC阶段被回收、让对象在新生代多存活一段时间及不要创建过大的对象及数组  
-   #### 永生区空间不足   
+   ##### 永生区空间不足   
     JVM规范中运行时数据区域中的方法区，在HotSpot虚拟机中又被习惯称为永生代或者永生区，Permanet Generation中存放的为一些class的信息、常量、静态变量等数据，当系统中要加载的类、反射的类和调用的方法较多时，Permanet Generation可能会被占满，在未配置为采用CMS GC的情况下也会执行Full GC。如果经过Full GC仍然回收不了，那么JVM会抛出如下错误信息：
 java.lang.OutOfMemoryError: PermGen space 
 为避免Perm Gen占满造成Full GC现象，可采用的方法为增大Perm Gen空间或转为使用CMS GC  
