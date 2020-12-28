@@ -860,21 +860,7 @@ float	4字节
 long	8字节  
 double	8字节  
 boolean	至少1字节  
-
-### Spring事务传播机制
-PROPAGATION_REQUIRED —— 支持当前事务，如果当前没有事务，则新建一个事务，这是最常见的选择，也是 Spring 默认的一个事务传播属性  
-
-PROPAGATION_SUPPORTS —— 支持当前事务，如果当前没有事务，则以非事务方式执行  
-
-PROPAGATION_MANDATORY —— 支持当前事务，如果当前没有事务，则抛出异常  
-
-PROPAGATION_REQUIRES_NEW —— 新建事务，如果当前存在事务，把当前事务挂起  
-
-PROPAGATION_NOT_SUPPORTED —— 以非事务方式执行操作，如果当前存在事务，就把当前事务挂起  
-
-PROPAGATION_NEVER —— 以非事务方式执行，如果当前存在事务，则抛出异常  
-
-PROPAGATION_NESTED —— Nested的事务和它的父事务是相依的，它的提交是要等和它的父事务一块提交的  
+ 
 
 
 ### List 和 Set区别
@@ -1150,7 +1136,7 @@ HashSet的value存的是一个static finial PRESENT = newObject()。而HashSet�
 
 ## Spring
 
- ### Spring AOP
+### Spring AOP
  
 AOP-面向切面编程  
 Spring 早期版本的核心功能，管理对象生命周期与对象装配  
