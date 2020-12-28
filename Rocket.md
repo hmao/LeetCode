@@ -623,6 +623,37 @@ java.lang.OutOfMemoryError: PermGen space
 29. -XX:MaxGCPauseMillis=100：设置每次年轻代垃圾回收的最长时间，如果无法满足此时间，JVM会自动调整年轻代大小，以满足此值。
 30. -XX:+UseAdaptiveSizePolicy：设置此选项后，并行收集器会自动选择年轻代区大小和相应的Survivor区比例，以达到目标系统规定的最低响应时间或者收集频率等，此值建议使用并行收集器时，一直打开
 
+
+### JVM 命令行工具
+1. jps/jinfo 查看 java 进程
+  jps/jps -lmv
+2. jstat 查看 JVM 内部 gc 相关信息   
+   stat -gc 1763 1000 100 
+   每隔1000 ms，1000次  
+   stat -gcutil 1763 1000 1000（使用率）  
+3. jmap 查看 heap 或类占用空间统计 
+  jmap -histo 1763   
+  jmap -heap 1763  
+4. jstack 查看线程信息  
+  jstack -l 1763  
+5. jcmd 执行 JVM 相关分析命令(整合命令)  
+  jcmd pid VM.version  
+  jcmd pid VM.flags  
+  jcmd pid VM.command_line  
+  jcmd pid VM.system_properties   
+  jcmd pid Thread.print  
+  jcmd pid GC.class_histogram  
+  jcmd pid GC.heap_info     
+6. jrunscript/jjs 执行 js 命令  
+  当curl命令用:   
+  jrunscript -e "cat('http://www.baidu.com')" 执行js脚本片段  
+  jrunscript -e "print('hello,kk.jvm'+1)" 执行js文件  
+  jrunscript -l js -f /XXX/XXX/test.js  
+7. JVM 图形化工具--jconsole  
+   JVM 图形化工具--jvisualvm  
+   JVM 图形化工具--jmc  
+   
+   
 ### JVM调优目标-何时需要做jvm调优
 
 1. heap 内存（老年代）持续上涨达到设置的最大内存值；
@@ -718,56 +749,6 @@ java.lang.String 的类来替换java核心类库的java.lang.String类，否则�
 
 3. 缓存加载
 
-
-### JVM 命令行工具
-1. jps/jinfo 查看 java 进程
-  jps/jps -lmv
-2. jstat 查看 JVM 内部 gc 相关信息   
-   stat -gc 1763 1000 100 
-   每隔1000 ms，1000次  
-   stat -gcutil 1763 1000 1000（使用率）  
-3. jmap 查看 heap 或类占用空间统计 
-  jmap -histo 1763   
-  jmap -heap 1763  
-4. jstack 查看线程信息  
-  jstack -l 1763  
-5. jcmd 执行 JVM 相关分析命令(整合命令)  
-  jcmd pid VM.version  
-  jcmd pid VM.flags  
-  jcmd pid VM.command_line  
-  jcmd pid VM.system_properties   
-  jcmd pid Thread.print  
-  jcmd pid GC.class_histogram  
-  jcmd pid GC.heap_info     
-6. jrunscript/jjs 执行 js 命令  
-  当curl命令用:   
-  jrunscript -e "cat('http://www.baidu.com')" 执行js脚本片段  
-  jrunscript -e "print('hello,kk.jvm'+1)" 执行js文件  
-  jrunscript -l js -f /XXX/XXX/test.js  
-7. JVM 图形化工具--jconsole  
-   JVM 图形化工具--jvisualvm  
-   JVM 图形化工具--jmc  
-   
-### JVM
-Eden so s1 8:1:1  
-由如下参数控制提升阈值 -XX:+MaxTenuringThreshold=15  
-mark-and-sweep algorithm.  
-   The algorithm traverses all object references, starting with the GC roots, and marks every object found as alive.    
-   All of the heap memory that is not occupied by marked objects is reclaimed. It is simply marked as free, essentially swept free of unused objects.  
-
-停止-复制(mark-copy)  
-标记-清除(Mark-Sweep)  
-标记-整理(Mark-Compact)  
-分代收集算法(Generational Collection)  
-效率：复制算法>标记/整理算法>标记/清除算法（此处的效率只是简单的对比时间复杂度，实际情况不一定如此  
-内存整齐度：复制算法=标记/整理算法>标记/清除算法。  
-内存利用率：标记/整理算法=标记/清除算法>复制算法。 
-
-1. Parallel GC  
--XX:+UseParallelGC
-2. Mostly Concurrent Mark and Sweep Garbage Collector  
--XX:+UseConcMarkSweepGC
-3. G1 GC
 
 ### NIO
 端口：进程  
