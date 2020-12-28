@@ -2192,7 +2192,7 @@ Executor接口定义了执行任务的execute()，实现流程还要看是哪个
 如果创建新线程将使当前运行的线程超出maximumPoolSize，任务将被拒绝，并调用 RejectedExecutionHandler.rejectedExecution()方法  
 ThreadPoolExecutor采取上述步骤的总体设计思路，是为了在执行execute()方法时，尽可能地避免获取全局锁（那将会是一个严重的可伸缩瓶颈）。在ThreadPoolExecutor完成预热之后 （当前运行的线程数大于等于corePoolSize），几乎所有的execute()方法调用基本都是从同步队列里拿，不需要锁，是一个while（true  
 
-### 可重入功能的实现原理
+### 可重入锁功能的实现原理
 
 ReentrantLock的实现基于队列同步器（AbstractQueuedSynchronizer，后面简称AQS），关于AQS的实现原理，可以看笔者的另一篇文章：https://juejin.cn/post/6844903842530738184  
 Java队列同步器（AQS）到底是怎么一回事  
