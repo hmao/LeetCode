@@ -332,6 +332,14 @@ MySQL为了保证ACID中的一致性和持久性，使用了WAL(Write-Ahead Logg
 * 红黑树：通过舍弃严格的平衡和引入红黑节点，解决了	AVL旋转效率过低的问题，但是在磁盘等场景下，树仍然太高，IO次数太多。
 * B+树：在B树的基础上，将非叶节点改造为不存储数据纯索引节点，进一步降低了树的高度；此外将叶节点使用指针连接成链表，范围查询更加高效。
 
+### 红黑树
+节点是红色或黑色  
+根是黑色  
+所有叶子都是黑色（叶子是NIL节点）  
+每个红色节点必须有两个黑色的子节点。（从每个叶子到根的所有路径上不能有两个连续的红色节点  
+从任一节点到其每个叶子的所有简单路径都包含相同数目的黑色节点  
+
+
 ### B+树的叶子节点都可以存哪些东西
 
 可能存储的是整行数据，也有可能是主键的值。B+树的叶子节点存储了整行数据的是主键索引，也被称之为聚簇索引。而索引B+ Tree的叶子节点存储了主键的值的是非主键索引，也被称之为非聚簇索引
@@ -356,6 +364,7 @@ MySQL为了保证ACID中的一致性和持久性，使用了WAL(Write-Ahead Logg
 2. 只返回需要的字段
 3. 减少交互次数（批量提交）
 4. 设置合理的Fetch Size（数据每次返回给客户端的条数）
+
 
 ## JVM
 
@@ -582,20 +591,30 @@ JVM引入动态年龄计算，主要基于如下两点考虑：
 
 ### JVM调优实战
 
-1. Major GC和Minor GC频繁
+1.  Minor GC运行的很频繁
+    a、 产生了太多朝生夕灭的对象导致需要频繁minor gc  
 
-    首先优化Minor GC频繁问题。通常情况下，由于新生代空间较小，Eden区很快被填满，就会导致频繁Minor GC，因此可以通过增大新生代空间来降低Minor GC的频率。例如在相同的内存分配率的前提下，新生代中的Eden区增加一倍，Minor GC的次数就会减少一半。
+    b、 新生代空间设置的比较小  
     
-    扩容Eden区虽然可以减少Minor GC的次数，但会增加单次Minor GC时间么？扩容后，Minor GC时增加了T1（扫描时间），但省去T2（复制对象）的时间，更重要的是对于虚拟机来说，复制对象的成本要远高于扫描成本，所以，单次Minor GC时间更多取决于GC后存活对象的数量，而非Eden区的大小。因此如果堆中短期对象很多，那么扩容新生代，单次Minor GC时间不会显著增加。
-    
-    如何选择各分区大小应该依赖应用程序中对象生命周期的分布情况：如果应用存在大量的短期对象，应该选择较大的年轻代；如果存在相对较多的持久对象，老年代应该适当增大  
-    Minor GC触发条件  
-        当Eden区满时，触发Minor GC  
+    minor gc运行的很慢有可能是什么原因引起的  
 
-    FullGC触发条件
-       调⽤ System.gc() 此⽅法的调⽤是建议 JVM 进⾏ Full GC，虽然只是建议⽽⾮⼀定，但很多情况下它会触发 Full GC。因此强烈建议能不使⽤此⽅法就不要使⽤，让虚拟机⾃⼰去管理它的内存。可        通过 -XX:+ DisableExplicitGC 来禁⽌ RMI 调⽤ System.gc()  
-       ⽼年代空间不⾜ ⽼年代空间不⾜的常⻅场景为前⽂所讲的⼤对象直接进⼊⽼年代、⻓期存活的对象进⼊⽼年代等，当执⾏ Full GC 后空间仍然不⾜，则抛出Java.lang.OutOfMemoryError。为避免以        上原因引起的 Full GC，调优时应尽量做到让对象在 Minor GC 阶段被回收、让对象在新⽣代多存活⼀段时间以及不要创建过⼤的对象及数组  
-       空间分配担保失败 使⽤复制算法的 Minor GC 需要⽼年代的内存空间作担保，如果出现HandlePromotionFailure 担保失败，则会触发 Full GC  
+    a、 新生代空间设置过大  
+
+    b、 对象引用链较长，进行可达性分析时间较长  
+
+    c、 新生代survivor区设置的比较小，清理后剩余的对象不能装进去需要移动到老年代，造成移动开销  
+
+    d、 内存分配担保失败，由minor gc转化为full gc  
+
+    e、 采用的垃圾收集器效率较低，比如新生代使用serial收集器  
+    
+    Minor GC触发条件   
+    当Eden区满时，触发Minor GC  
+    
+    FullGC 触发条件
+    a. 调⽤ System.gc() 此⽅法的调⽤是建议 JVM 进⾏ Full GC，虽然只是建议⽽⾮⼀定，但很多情况下它会触发 Full GC。因此强烈建议能不使⽤此⽅法就不要使⽤，让虚拟机⾃⼰去管理它的内存。可通过 -XX:+ DisableExplicitGC 来禁⽌ RMI 调⽤ System.gc()  
+    b. ⽼年代空间不⾜ ⽼年代空间不⾜的常⻅场景为前⽂所讲的⼤对象直接进⼊⽼年代、⻓期存活的对象进⼊⽼年代等，当执⾏ Full GC 后空间仍然不⾜，则抛出Java.lang.OutOfMemoryError。为避免以上原因引起的 Full GC，调优时应尽量做到让对象在 Minor GC 阶段被回收、让对象在新⽣代多存活⼀段时间以及不要创建过⼤的对象及数组  
+    c. 空间分配担保失败 使⽤复制算法的 Minor GC 需要⽼年代的内存空间作担保，如果出现HandlePromotionFailure 担保失败，则会触发 Full GC  
     
 2. 请求高峰期发生GC，导致服务可用性下降
 
@@ -717,11 +736,6 @@ Eden so s1 8:1:1
 mark-and-sweep algorithm.  
    The algorithm traverses all object references, starting with the GC roots, and marks every object found as alive.    
    All of the heap memory that is not occupied by marked objects is reclaimed. It is simply marked as free, essentially swept free of unused objects.  
-可以作为 GC Roots 的对象  
-1. 当前正在执行的方法里的局部变量和输入参数  
-2. 活动线程(Active threads)  
-3. 所有类的静态字段(static field) 
-4. JNI 引用
 
 停止-复制(mark-copy)  
 标记-清除(Mark-Sweep)  
