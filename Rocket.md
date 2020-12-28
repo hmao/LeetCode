@@ -874,48 +874,7 @@ RandomAccess接口
   ArrayList是List接口的可变数组的实现。实现了所有可选列表操作，并允许包括 null 在内的所有元素。除了实现 List 接口外，此类还提供一些方法来操作内部用来存储列表的数组的大小  
    每个ArrayList实例都有一个容量，该容量是指用来存储列表元素的数组的大小。它总是至少等于列表的大小。随着向ArrayList中不断添加元素，其容量也自动增长。自动增长会带来数据向新数组的重新拷贝，因此，如果可预知数据量的多少，可在构造ArrayList时指定其容量。在添加大量元素前，应用程序也可以使用ensureCapacity操作来增加ArrayList实例的容量，这可以减少递增式再分配的数量  
    注意，此实现不是同步的。如果多个线程同时访问一个ArrayList实例，而其中至少一个线程从结构上修改了列表，那么它必须保持外部同步  
-### Linux命令用过哪些
-
-https://blog.csdn.net/ljianhui/article/details/11100625
-
-系统  
-
- uname -a               # 查看内核/操作系统/CPU信息  
-lsb_release -a         # 查看操作系统版本 (适用于所有的linux，包括Redhat、SuSE、Debian等发行版，但是在debian下要安装lsb)     
-cat /proc/cpuinfo      # 查看CPU信息  
- hostname               # 查看计算机名  
- lspci -tv              # 列出所有PCI设备  
- lsusb -tv              # 列出所有USB设备  
- lsmod                  # 列出加载的内核模块  
- env                    # 查看环境变量  
-资源  
-
- free -m                # 查看内存使用量和交换区使用量  
- df -h                  # 查看各分区使用情况  
- du -sh <目录名>        # 查看指定目录的大小  
- grep MemTotal /proc/meminfo   # 查看内存总量  
- grep MemFree /proc/meminfo    # 查看空闲内存量  
- uptime                 # 查看系统运行时间、用户数、负载  
- cat /proc/loadavg      # 查看系统负载  
-磁盘和分区  
-
- mount | column -t      # 查看挂接的分区状态  
- fdisk -l               # 查看所有分区   
- swapon -s              # 查看所有交换分区  
- hdparm -i /dev/hda     # 查看磁盘参数(仅适用于IDE设备)  
- dmesg | grep IDE       # 查看启动时IDE设备检测状况  
-网络  
-
- ifconfig               # 查看所有网络接口的属性  
- iptables -L            # 查看防火墙设置  
- route -n               # 查看路由表  
-netstat -lntp          # 查看所有监听端口  
- netstat -antp          # 查看所有已经建立的连接  
- netstat -s             # 查看网络统计信息  
-进程
-
- ps -ef                 # 查看所有进程  
- top                    # 实时显示进程状态  
+ 
  
 ### B+树索引和哈希索引的区别
 
@@ -985,26 +944,7 @@ Hi = RHi(key) i= 1,2,3 ... k;
 302重定向表示临时性转移(Temporarily Moved )，当一个网页URL需要短期变化时使用。  
 301重定向是永久的重定向，搜索引擎在抓取新内容的同时也将旧的网址替换为重定向之后的网址  
 
-### OSI 
-OSI中的层
-
-功能
-
-TCP/IP协议族
-
-应用层   文件传输，电子邮件，文件服务，虚拟终端   TFTP，HTTP，SNMP，FTP，SMTP，DNS，Telnet  
-
-表示层   数据格式化，代码转换，数据加密   没有协议   
-
-会话层   解除或建立与别的接点的联系   没有协议  
-
-传输层   提供端对端的接口   TCP，UDP  
-
-网络层   为数据包选择路由   IP，ICMP，RIP，OSPF，BGP，IGMP  
-
-数据链路层  传输有地址的帧以及错误检测功能   SLIP，CSLIP，PPP，ARP，RARP，MTU  
-
-物理层  以二进制数据形式在物理媒体上传输数据  ISO2110，IEEE802。IEEE802.2  
+ 
 
 ### ArrayList
 基本特点:基于数组，便于按 index 访问，超过数组需要扩容，扩容成本较高 用途:大部分情况下操作一组数据都可以用 ArrayList  
@@ -1464,6 +1404,48 @@ https://www.cnblogs.com/FG123/p/10091599.html
 
 ## 操作系统
 
+### Linux命令用过哪些
+
+https://blog.csdn.net/ljianhui/article/details/11100625
+
+系统  
+
+ uname -a               # 查看内核/操作系统/CPU信息  
+lsb_release -a         # 查看操作系统版本 (适用于所有的linux，包括Redhat、SuSE、Debian等发行版，但是在debian下要安装lsb)     
+cat /proc/cpuinfo      # 查看CPU信息  
+ hostname               # 查看计算机名  
+ lspci -tv              # 列出所有PCI设备  
+ lsusb -tv              # 列出所有USB设备  
+ lsmod                  # 列出加载的内核模块  
+ env                    # 查看环境变量  
+资源  
+
+ free -m                # 查看内存使用量和交换区使用量  
+ df -h                  # 查看各分区使用情况  
+ du -sh <目录名>        # 查看指定目录的大小  
+ grep MemTotal /proc/meminfo   # 查看内存总量  
+ grep MemFree /proc/meminfo    # 查看空闲内存量  
+ uptime                 # 查看系统运行时间、用户数、负载  
+ cat /proc/loadavg      # 查看系统负载  
+磁盘和分区  
+
+ mount | column -t      # 查看挂接的分区状态  
+ fdisk -l               # 查看所有分区   
+ swapon -s              # 查看所有交换分区  
+ hdparm -i /dev/hda     # 查看磁盘参数(仅适用于IDE设备)  
+ dmesg | grep IDE       # 查看启动时IDE设备检测状况  
+网络  
+
+ ifconfig               # 查看所有网络接口的属性  
+ iptables -L            # 查看防火墙设置  
+ route -n               # 查看路由表  
+netstat -lntp          # 查看所有监听端口  
+ netstat -antp          # 查看所有已经建立的连接  
+ netstat -s             # 查看网络统计信息  
+进程
+
+ ps -ef                 # 查看所有进程  
+ top                    # 实时显示进程状态 
 ### 进程和线程
 
 1. 进程是操作系统资源分配的最小单位，线程是CPU任务调度的最小单位。一个进程可以包含多个线程，所以进程和线程都是一个时间段的描述，是CPU工作时间段的描述，不过是颗粒大小不同。
@@ -1583,6 +1565,28 @@ TCP是一个双向通信协议，通信双方都有能力发送信息，并接�
 ### 为什么连接的时候是三次握手，关闭的时候却是四次握手
 
 因为当Server端收到Client端的SYN连接请求报文后，可以直接发送SYN+ACK报文。其中ACK报文是用来应答的，SYN报文是用来同步的。但是关闭连接时，当Server端收到FIN报文时，很可能并不会立即关闭SOCKET，所以只能先回复一个ACK报文，告诉Client端，"你发的FIN报文我收到了"。只有等到我Server端所有的报文都发送完了，我才能发送FIN报文，因此不能一起发送。故需要四步握手。
+
+### OSI 
+OSI中的层
+
+功能
+
+TCP/IP协议族
+
+应用层   文件传输，电子邮件，文件服务，虚拟终端   TFTP，HTTP，SNMP，FTP，SMTP，DNS，Telnet  
+
+表示层   数据格式化，代码转换，数据加密   没有协议   
+
+会话层   解除或建立与别的接点的联系   没有协议  
+
+传输层   提供端对端的接口   TCP，UDP  
+
+网络层   为数据包选择路由   IP，ICMP，RIP，OSPF，BGP，IGMP  
+
+数据链路层  传输有地址的帧以及错误检测功能   SLIP，CSLIP，PPP，ARP，RARP，MTU  
+
+物理层  以二进制数据形式在物理媒体上传输数据  ISO2110，IEEE802。IEEE802.2 
+
 
 ## 数据结构与算法
 
