@@ -272,6 +272,12 @@ http://16kr.com/42.html
 | 可重复读   | 否  | 否     | 是  |
 | 串行化    | 否  | 否     | 否  |
 
+### Oracle事务隔离级别
+oracle数据库支持READ COMMITTED 和 SERIALIZABLE这两种事务隔离级别。
+
+默认系统事务隔离级别是READ COMMITTED,也就是读已提交
+
+
 ### Mysql的逻辑结构
 
 * 最上层的服务类似其他CS结构，比如连接处理，授权处理。
